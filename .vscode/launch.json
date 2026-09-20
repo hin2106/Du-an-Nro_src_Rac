@@ -1,0 +1,23 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "NRO Setup + Server",
+            "request": "launch",
+            "mainClass": "setup.ApplicationLauncher",
+            "projectName": "nro-server",
+            "cwd": "${workspaceFolder}/nroteam-maven",
+            "console": "integratedTerminal"
+        },
+        {
+            "type": "java",
+            "name": "LoadTest",
+            "request": "launch",
+            "mainClass": "test.LoadTest",
+            "projectName": "nro-server",
+            "cwd": "${workspaceFolder}/nroteam-maven",
+            "console": "integratedTerminal"
+        }
+    ]
+}

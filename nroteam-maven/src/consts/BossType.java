@@ -1,0 +1,24 @@
+package consts;
+public enum BossType {
+    ANTROM,
+    CauVang,
+    YARDART,
+    FINAL,
+    SKILLSUMMONED,
+    BROLY,
+    PLAYERAO,
+    PHOBAN,
+    PHOBANDT,
+    PHOBANBDKB,
+    PHOBANCDRD,
+    PHOBANKGHD,
+    TRUNGTHU_EVENT,
+    HALLOWEEN_EVENT,
+    CHRISTMAS_EVENT,
+    HUNGVUONG_EVENT,
+    TET_EVENT,
+    MANAGER_DEBUG,
+    FIDE_DAI_CA_CHALLENGE,
+    BOSS12H,
+    BOSS14H
+}

@@ -1,0 +1,66 @@
+package services.map;
+
+import data.AlyraManager;
+import lombok.Getter;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import org.json.JSONException;
+
+public class EffectEventManager {
+
+    private static final EffectEventManager i = new EffectEventManager();
+
+    public static EffectEventManager gI() {
+        return i;
+    }
+
+    @Getter
+    private final List<EffectEventTemplate> list = new ArrayList<>();
+
+    public void load() throws JSONException {
+        try (java.sql.Connection con = AlyraManager.getConnection();
+             PreparedStatement ps = con.prepareStatement("SELECT * FROM `map_template`", 
+                     java.sql.ResultSet.TYPE_SCROLL_INSENSITIVE, 
+                     java.sql.ResultSet.CONCUR_READ_ONLY);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                int mapID = rs.getInt("id");
+                JSONArray jar = new JSONArray(rs.getString("eff_event"));
+                for (int j = 0; j < jar.length(); j++) {
+                    JSONObject jobj = jar.getJSONObject(j);
+                    int evID = jobj.getInt("event_id");
+                    int effID = jobj.getInt("eff_id");
+                    int layer = jobj.getInt("layer");
+                    int x = jobj.getInt("x");
+                    int y = jobj.getInt("y");
+                    int loop = jobj.getInt("loop");
+                    int delay = jobj.getInt("delay");
+
+                    EffectEventTemplate ee = EffectEventTemplate.builder()
+                            .mapId(mapID)
+                            .eventId(evID)
+                            .effId(effID)
+                            .layer(layer)
+                            .x(x)
+                            .y(y)
+                            .loop(loop)
+                            .delay(delay)
+                            .build();
+                    add(ee);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void add(EffectEventTemplate ee) {
+        list.add(ee);
+    }
+}

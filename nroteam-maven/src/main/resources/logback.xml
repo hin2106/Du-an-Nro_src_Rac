@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- Tắt log DEBUG của HikariCP -->
+    <logger name="com.zaxxer.hikari" level="WARN"/>
+    <logger name="com.zaxxer.hikari.pool" level="WARN"/>
+    <logger name="com.zaxxer.hikari.pool.HikariPool" level="WARN"/>
+    
+    <!-- Tắt log INFO/WARN của Pcap4J -->
+    <logger name="org.pcap4j" level="ERROR"/>
+    <logger name="org.pcap4j.core.NativeMappings" level="ERROR"/>
+    <logger name="org.pcap4j.core.Pcaps" level="ERROR"/>
+    <logger name="org.pcap4j.util.PropertiesLoader" level="ERROR"/>
+    
+    <!-- Root logger -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+    
+    <!-- Console appender -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+</configuration>
+

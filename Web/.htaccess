@@ -1,0 +1,125 @@
+RewriteEngine On
+
+# Reject unusually large request bodies before PHP/MySQL work begins.
+LimitRequestBody 8388608
+
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+RewriteCond %{HTTPS} !=on
+RewriteCond %{HTTP:X-Forwarded-Proto} !https [NC]
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+ErrorDocument 404 /404
+ErrorDocument 403 /403
+ErrorDocument 401 /401
+ErrorDocument 500 /500
+
+RewriteRule ^404$ index.php?role=Client&modun=ERR&act=404 [L]
+RewriteRule ^403$ index.php?role=Client&modun=ERR&act=403 [L]
+RewriteRule ^401$ index.php?role=Client&modun=ERR&act=401 [L]
+RewriteRule ^500$ index.php?role=Client&modun=ERR&act=500 [L]
+
+RewriteRule ^index.html$ index.php [L]
+RewriteRule ^trang-chu$ index.php [L]
+ 
+RewriteRule ^dang-xuat$ Page/Client/Logout.php [L]
+
+# Rewrite API
+RewriteRule ^Api/Auth/Login$ Api/Client/Auth/Login.php [L]
+RewriteRule ^Api/Auth/Register$ Api/Client/Auth/Register.php [L]
+RewriteRule ^Api/Auth/changePassword$ Api/Client/Auth/changePassword.php [L]
+RewriteRule ^Api/Auth/forgotPassword$ Api/Client/Auth/forgotPassword.php [L]
+RewriteRule ^Api/Auth/resetPassword$ Api/Client/Auth/resetPassword.php [L]
+
+RewriteRule ^Api/Post/Add$ Api/Client/BaiViet/ThemBaiViet.php [L]
+RewriteRule ^Api/Cmt/Add$ Api/Client/BaiViet/ThemBinhLuan.php [L]
+
+RewriteRule ^Api/Post/Load$ Api/Client/BaiViet/TaiBaiViet.php [L]
+RewriteRule ^Api/Cmt/Load$ Api/Client/BaiViet/TaiBinhLuan.php [L]
+
+RewriteRule ^Api/Post/Like$ Api/Client/BaiViet/LikeBaiViet.php [L]
+
+RewriteRule ^Api/User/NapThe$ Api/Client/User/Napthe.php [L]
+RewriteRule ^Api/User/NapBank$ Api/Client/User/NapBank.php [L]
+RewriteRule ^Api/User/PaymentStatus$ Api/Client/User/PaymentStatus.php [L]
+
+
+RewriteRule ^Api/User/Active$ Api/Client/User/KichHoat.php [L]
+RewriteRule ^Api/User/Bonus$ Api/Client/User/Bonus.php [L]
+
+RewriteRule ^Minigame/Whell$ Api/Client/Minigame/Wheel.php [L]
+
+# Rewrite Pages Auth
+RewriteRule ^dang-nhap$ index.php?role=Client&modun=Auth&act=Login [L]
+RewriteRule ^dang-ky$ index.php?role=Client&modun=Auth&act=Register [L]
+RewriteRule ^doi-mat-khau$ index.php?role=Client&modun=Auth&act=changePassword [L]
+RewriteRule ^quen-mat-khau$ index.php?role=Client&modun=Auth&act=forgotPassword [L]
+RewriteRule ^dat-lai-mat-khau$ index.php?role=Client&modun=Auth&act=resetPassword [QSA,L]
+
+# Rewrite Pages Top
+RewriteRule ^top-suc-manh$ index.php?role=Client&modun=Top&act=TopSucManh [L]
+RewriteRule ^top-nap$ index.php?role=Client&modun=Top&act=TopNap [L]
+
+# Rewrite Pages Bank Payos
+RewriteRule ^Success$ index.php?role=Client&modun=Profile&act=Success [L]
+RewriteRule ^Cancel$ index.php?role=Client&modun=Profile&act=Cancel [L]
+
+RewriteRule ^Webhook$ Api/Client/User/Webhook.php [L]
+
+# Rewrite Pages Download
+RewriteRule ^tai-game$ index.php?role=Client&modun=Download&act=TaiGame [L]
+
+# Rewrite Pages BaiViet
+RewriteRule ^bai-viet/([0-9]+)$ index.php?role=Client&modun=BaiViet&act=XemBaiViet&id=$1 [L]
+RewriteRule ^dang-bai-viet$ index.php?role=Client&modun=BaiViet&act=DangBaiViet [L]
+
+# Rewrite Pages Profile
+RewriteRule ^thong-tin-tai-khoan$ index.php?role=Client&modun=Profile&act=Member [L]
+RewriteRule ^thong-tin$ index.php?role=Client&modun=Profile&act=Member [L]
+
+RewriteRule ^nap-tien$ index.php?role=Client&modun=Profile&act=Recharge [L]
+
+RewriteRule ^nap-bank$ index.php?role=Client&modun=Profile&act=payment [L]
+
+# Rewrite Pages Minigame
+RewriteRule ^vong-quay$ index.php?role=Client&modun=Minigame&act=Wheel [L]
+
+
+# Rewrite Pages Admin
+RewriteRule ^admin$ index.php?role=Admin&modun=Home&act=index [L]
+RewriteRule ^admin/setting$ index.php?role=Admin&modun=Home&act=Setting [L]
+RewriteRule ^admin/poster$ index.php?role=Admin&modun=Home&act=Notice [L]
+RewriteRule ^admin/poster/edit-([0-9]+)$ index.php?role=Admin&modun=Home&act=EditNoti&id=$1 [L]
+RewriteRule ^admin/poster-user$ index.php?role=Admin&modun=Home&act=Poster [L]
+RewriteRule ^admin/poster-user/page=([0-9]+)$ index.php?role=Admin&modun=Home&act=Poster&page=$1 [L]
+RewriteRule ^admin/poster/page=([0-9]+)$ index.php?role=Admin&modun=Home&act=Notice&page=$1 [L]
+RewriteRule ^admin/login$ index.php?role=Client&modun=Auth&act=Admin_Login [L]
+RewriteRule ^admin/users$ index.php?role=Admin&modun=Member&act=UserManager [L]
+RewriteRule ^admin/users/page=([0-9]+)$ index.php?role=Admin&modun=Member&act=UserManager&page=$1 [L]
+RewriteRule ^admin/history/recharge$ index.php?role=Admin&modun=Member&act=HistoryRecharege [L]
+RewriteRule ^admin/history/recharge/page=([0-9]+)$ index.php?role=Admin&modun=Member&act=HistoryRecharege&page=$1 [L]
+
+RewriteRule ^admin/giftcode$ index.php?role=Admin&modun=Home&act=Giftcode [L]
+RewriteRule ^admin/giftcode/page=([0-9]+)$ index.php?role=Admin&modun=Home&act=Giftcode&page=$1 [L]
+
+
+# Rewrite API Admin
+RewriteRule ^Api/Admin/Login$ Api/Admin/Auth/Login.php [L]
+RewriteRule ^Api/Admin/ChucNang/1$ Api/Admin/Member/User.php?type=1 [L]
+RewriteRule ^Api/Admin/ChucNang/2$ Api/Admin/Member/User.php?type=2 [L]
+RewriteRule ^Api/Admin/ChucNang/3$ Api/Admin/Member/User.php?type=3 [L]
+RewriteRule ^Api/Admin/DelMem$ Api/Admin/Member/Delete.php [L]
+RewriteRule ^Api/Admin/Search$ Api/Admin/Member/Search.php [L]
+RewriteRule ^Api/Admin/Edit$ Api/Admin/Setting/Edit.php [L]
+RewriteRule ^Api/Admin/Post/Add$ Api/Admin/Post/Add.php [L]
+RewriteRule ^Api/Admin/Post/Edit$ Api/Admin/Post/Edit.php [L]
+RewriteRule ^Api/Admin/Post/Delete$ Api/Admin/Post/Delete.php [L]
+RewriteRule ^Api/Admin/Giftcode/AddRow$ Api/Admin/Giftcode/AddRow.php [L]
+RewriteRule ^Api/Admin/Giftcode/AddItem$ Api/Admin/Giftcode/AddItem.php [L]
+RewriteRule ^Api/Admin/Giftcode/AddGift$ Api/Admin/Giftcode/AddGift.php [L]
+RewriteRule ^Api/Admin/Giftcode/AddGift$ Api/Admin/Giftcode/AddGift.php [L]
+RewriteRule ^Api/Admin/Giftcode/Delete$ Api/Admin/Giftcode/Delete.php [L]
+RewriteRule ^Api/Admin/Giftcode/Edit$ Api/Admin/Giftcode/Edit.php [L]
